@@ -1,4 +1,4 @@
-# account-frontend
+# generic-frontend
 
 ## Project setup
 ```
