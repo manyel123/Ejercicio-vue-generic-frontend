@@ -2,9 +2,9 @@
     <div class="transaction">
         <div class="containerTransaction">
             <h1>Transacciones</h1>
-            <form v-on:submit.prevent="processTransaction"><!--Formulario_de_transacción-->
-                <select v-model="transaction.transaction_data.account_destiny"><!--Select_del_comboBox-->
-                    <option v-for="account in accounts" :key="account.id" :value="account.id">{{ account.user.name}}</option><!--carga_de_información_del_comboBox_desde_la_db-->
+            <form v-on:submit.prevent="processTransaction">
+                <select v-model="transaction.transaction_data.account_destiny">
+                    <option v-for="account in accounts" :key="account.id" :value="account.id">{{ account.user.name}}</option>
                 </select>
                 <input type="number" placeholder="Cantidad" v-model="transaction.transaction_data.amount">
                 <input type="text" placeholder="Nota" v-model="transaction.transaction_data.note">
@@ -23,7 +23,7 @@ export default{
 
     data: function() {
         return {
-            transaction : {/*Datos_para_la_transferencia */
+            transaction : {
                 user_id : 0,
                 transaction_data : {
                     account_origin  : 0,
@@ -34,35 +34,35 @@ export default{
                 }
             },
 
-            accounts : [],/*Lista_de_cuentas_para_el_comboBox */
+            accounts : [],
 
-            accountId : 0,/*id_de_la_cuenta_asociada_al_id_del_usuario_obtenido_del_token */
+            accountId : 0,
         }
     },
 
     methods:{
 
-        getUserAccountData: async function () {/*Esta_función_trae_el_accountId_desde_la_base_de_datos */
+        getUserAccountData: async function () {
             if (
                 localStorage.getItem("token_access") === null ||
                 localStorage.getItem("token_refresh") === null
-            ) {/*Si_no_hay_tokens_en_el_localStorage_cerrará_la_sesión_del_usuario*/
+            ) {
                 this.$emit("logOut");
                 return;
             }
 
-            await this.verifyToken();/*genera_un_nuevo_token_de_acceso_a_partir_del_token_refresh */
+            await this.verifyToken();
 
-            let token  = localStorage.getItem("token_access");/*asigna_el_token_access_guardado_a_token */
+            let token  = localStorage.getItem("token_access");
             let userId = jwt_decode(token).user_id.toString();
-                        /*Pasa_el_token_por_el_jwt_decode_saca_el_user_id_del_token_y_lo_convierte_en_string*/
+                        
             axios
                 .get(
-                    `http://localhost:8000/user/${userId}/`,/*Este_userId_viene_del_token*/
+                    `http://localhost:8000/user/${userId}/`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 )
                 .then((result) => {
-                    this.accountId = result.data.account.id;/*Asigna_el_account.id_en_la_base_de_datos_al_accountId_local_basado_en_el_user_id_del_token*/
+                    this.accountId = result.data.account.id;
                 })
                 .catch(() => {
                     this.$emit("logOut");
@@ -73,18 +73,18 @@ export default{
             if (
                 localStorage.getItem("token_access") === null ||
                 localStorage.getItem("token_refresh") === null
-            ) {/*Si_no_hay_tokens_en_el_localStorage_cerrará_la_sesión_del_usuario*/
+            ) {
                 this.$emit("logOut");
                 return;
             }
 
-            await this.verifyToken();/*genera_un_nuevo_token_de_acceso_a_partir_del_token_refresh */
+            await this.verifyToken();
 
-            let token  = localStorage.getItem("token_access");/*asigna_el_token_access_guardado_a_token */
-            let userId = jwt_decode(token).user_id;/*Saca_el_user_id_del_token */
+            let token  = localStorage.getItem("token_access");
+            let userId = jwt_decode(token).user_id;
 
-            this.transaction.user_id = userId;/*Asigna_el_user_id_del_token_al_user_id_de_la_transacción*/
-            this.transaction.transaction_data.account_origin = this.accountId;/*Asigna_el_id_de_la_cuenta_al_accountId_local */
+            this.transaction.user_id = userId;
+            this.transaction.transaction_data.account_origin = this.accountId;
 
             if (
                 this.transaction.transaction_data.account_origin === this.accountId
@@ -96,12 +96,12 @@ export default{
                         { headers: { Authorization: `Bearer ${token}` } },
                     )
                     .then((result) => {                             
-                        let dataTransaction = {/*Datos_para_enviar_a_la_alerta_después_del_proceso_de_transacción */
+                        let dataTransaction = {
                             amount         : this.transaction.transaction_data.amount,
                             registerDate   : this.transaction.transaction_data.register_date,
                             note           : this.transaction.transaction_data.note,
                         }
-                        this.$emit('transactionCompleted', dataTransaction)/*Envío_de_la_confirmación_con_los_datos_para_mostrar */
+                        this.$emit('transactionCompleted', dataTransaction)
                     })
                     .catch((error) => {
                         /*console.log(error);*/
@@ -119,23 +119,23 @@ export default{
             if (
                 localStorage.getItem("token_access") === null ||
                 localStorage.getItem("token_refresh") === null
-            ) {/*Si_no_hay_tokens_en_el_localStorage_cerrará_la_sesión_del_usuario*/
+            ) {
                 this.$emit("logOut");
                 return;
             }
 
-            await this.verifyToken();/*genera_un_nuevo_token_de_acceso_a_partir_del_token_refresh */
+            await this.verifyToken();
 
-            let token  = localStorage.getItem("token_access");/*asigna_el_token_access_guardado_a_token */
+            let token  = localStorage.getItem("token_access");
             let userId = jwt_decode(token).user_id.toString();
 
             axios
-                .get(/*Petición_para_obtener_las_cuentas */
+                .get(
                     `http://localhost:8000/accounts/list/${userId}/`,
                     { headers: { Authorization: `Bearer ${token}` } }
                 )
                 .then((result) => {
-                    this.accounts = result.data;/*Asigna_la_lista_de_cuenteas_obtenidas_al_accounts[]_local */
+                    this.accounts = result.data;
                 })
                 .catch((error) => {
                     if (error.response.status == "401"){
@@ -147,18 +147,18 @@ export default{
                 })
         },
 
-        verifyToken: function () {/*Genera_un_nuevo_token_de_acceso_con_el_token_de_refresh*/
+        verifyToken: function () {
             return axios
                 .post(
-                    "http://localhost:8000/refresh/",/*Endpoint_del_refresh_token */
-                    { refresh: localStorage.getItem("token_refresh") },/*info_que_se_envía_al_enpoint_para_el_refresh_del_token */
+                    "http://localhost:8000/refresh/",
+                    { refresh: localStorage.getItem("token_refresh") },
                     { headers: {} }
                 )
                 .then((result) => {
-                    localStorage.setItem("token_access", result.data.access);/*Guarda_el_nuevo_token_de_acceso_en_el_localStorage */
+                    localStorage.setItem("token_access", result.data.access);
                 })
                 .catch(() => {
-                    this.$emit("logOut");/*En_caso_de_error_redirecciona_al_logOut */
+                    this.$emit("logOut");
                 });
         },
     },

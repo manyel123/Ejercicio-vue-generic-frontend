@@ -8,8 +8,10 @@
                     Comp1(NotLogInComp)</button>
                 <button v-on:click="loadHome">
                     Comp2(NotLogInComp)</button>
-                <button v-on:click="loadHome">
-                    Comp3(NotLogInComp)</button>
+                <button v-on:click="loadContactUs">
+                    Contáctenos</button>
+                <button v-if="is_auth"   v-on:click="loadUserHome">
+                     UserHome</button>
                 <button v-if="is_auth"   v-on:click="loadAccount">
                     Comp1(LogInComp)</button>
                 <button v-if="is_auth"   v-on:click="loadTransaction">
@@ -56,7 +58,7 @@ export default {
             this.is_auth = localStorage.getItem("isAuth") || false;
 
             if (this.is_auth == false) {
-                this.$router.push({ name: "logIn" });
+                this.$router.push({ name: "home" });
             } else 
                 this.$router.push({ name: "account" });
         },
@@ -92,12 +94,20 @@ export default {
             this.$router.push({ name: "home" });
         },
 
+        loadUserHome: function () {
+            this.$router.push({ name: "userHome"})
+        },
+
         loadAccount: function () {
             this.$router.push({ name: "account" });
         },
 
         loadTransaction: function () {
             this.$router.push({ name: "transactionCreate"});
+        },
+
+        loadContactUs: function () {
+            this.$router.push({ name: "contactus"})
         },
 
         logOut: function () {
@@ -117,13 +127,14 @@ export default {
 <style>
 body {
     margin: 0 0 0 0;
+    background: #3eda38;
 }
 
 .header {
     margin: 0;
     padding: 0;
     width: 100%;
-    height: 5vh;
+    height: 6vh;
     min-height: 50px;
     background-color: #3eda38;
     color: #e5e7e9;
@@ -155,10 +166,10 @@ body {
 }
 
 .main-component {
-    height: 87.59vh;
+    height: 87.6vh;
     margin: 0%;
     padding: 0%;
-    background: #fdfefe;
+    background: #fdfdfe;
 }
 
 .footer {
@@ -174,8 +185,8 @@ body {
 .footer h2 {
     width: 100%;
     height: 100%;
-    display: flex;
+    display:flex;
     justify-content: center;
-    align-items: center;
+    align-items:baseline;
 }
 </style>

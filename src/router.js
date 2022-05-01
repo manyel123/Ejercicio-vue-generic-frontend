@@ -6,6 +6,8 @@ import SignUp            from './components/SignUp.vue'
 import Home              from './components/Home.vue'
 import Account           from './components/Account.vue'
 import TransactionCreate from './components/TransactionCreate.vue'
+import ContactUs         from './components/ContactUs.vue'
+import UserHome          from './components/UserHome.vue'
 
 const routes = [
   {
@@ -24,20 +26,30 @@ const routes = [
     component: SignUp
   },
   {
-    path: '/user/home',
-    name: "home",
+    path: '/home',
+    name: 'home',
     component: Home
   },
   {
     path: '/user/account',
-    name: "account",
+    name: 'account',
     component: Account
   },
   {
     path: '/transaction/create',
-    name: "transactionCreate",
+    name: 'transactionCreate',
     component: TransactionCreate
   },
+  {
+    path: '/contactus',
+    name: 'contactus',
+    component: ContactUs
+  },
+  {
+    path: '/user/home',
+    name: 'userHome',
+    component: UserHome
+  }
 ];
 
 const router = createRouter({
