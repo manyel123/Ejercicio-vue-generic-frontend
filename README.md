@@ -1,4 +1,4 @@
-# generic-frontend
+# generic-frontend with login-register options
 
 ## Project setup
 ```
