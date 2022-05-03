@@ -4,9 +4,9 @@
             <nav>
                 <button v-on:click="loadHome">
                     Inicio</button>
-                <button v-on:click="loadHome">
+                <button v-on:click="loadComp1">
                     Comp1(NotLogInComp)</button>
-                <button v-on:click="loadHome">
+                <button v-on:click="loadComp1">
                     Comp2(NotLogInComp)</button>
                 <button v-on:click="loadContactUs">
                     Contáctenos</button>
@@ -108,6 +108,10 @@ export default {
 
         loadContactUs: function () {
             this.$router.push({ name: "contactus"})
+        },
+
+        loadComp1: function () {
+            this.$router.push({name: "comp1"})
         },
 
         logOut: function () {

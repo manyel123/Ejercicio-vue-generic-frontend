@@ -35,7 +35,7 @@ export default {
         },
         methods: {
             init() {
-                //We loop through all our images by calling the 'next' method of our component every 2 seconds
+                //We loop through all our images by calling the 'next' method of our component every 3 seconds
                 setInterval(() => {
                     this.$refs.slideshow.next();
                 }, 3000);
